@@ -358,9 +358,65 @@
                         </div> -->
                      </div>
                      <div class="form-group mt-3">
-                        <button type="submit" class="button button-contactForm btn_1" onclick="show()">Send Message <i
+                        <button onclick="show()" type="submit" class="button button-contactForm btn_1">Send Message <i
                               class="flaticon-right-arrow"></i> </button>
+                              <script>
+                                 function show() {
+                                   var name=document.getElementById("name").value;
+                                   var email=document.getElementById("email").value;
+                                   var comment=document.getElementById("comment").value;
+
+                                     firebase.database().ref('User/' + name).set({
+                                       name : name,
+                                       email : email,
+                                       comment : comment,
+                                     },function(error){
+                                     if(error){
+                                       //The write failed
+                                     }else{
+                                       alert("DONE");
+                                     }
+
+                                    });
+                                }
+                              </script>
                      </div>
+                     <div class="form-group">
+                    <label for="name1">Name</label>
+                    <input type="text" class="form-control" id="name1">
+                  </div>
+
+                  <div class="form-group">
+                    <!-- <input type="" id="name1" name="name" placeholder="Name"> -->
+                    <button onclick="search()" type="search" class="button button-contactForm btn_1">Search Comment<i
+                     class="flaticon-right-arrow"></i></button>
+                    <script>
+                      function search() {
+                        var name=document.getElementById("name1").value;
+
+                        firebase.database().ref('User/' + name).once('value').then(function(snapshot){
+                        if(snapshot.exists()) {
+                          var name_=snapshot.val().name;
+                          var mail_=snapshot.val().email;
+                          var comment_=snapshot.val().comment;
+                          document.getElementById("name1").value=name_;
+                          document.getElementById("email").value=mail_;
+                          document.getElementById("comment").value=comment_;
+                        }
+                        else{
+
+                        }
+                      }, function(error) {
+                        if(error){
+
+                        } else{
+
+                        }
+                      });
+                           }
+                    </script>
+                  </div>
+
                   </form>
                </div>
             </div>
